@@ -11,7 +11,8 @@ exports.seed = async function(knex) {
     {
       make: 'Subaru',
       model: "Impreza STI",
-      year: '2008'
+      year: '2008',
+      comments: '380hp'
     },
     {
       make: 'Subaru',
@@ -21,7 +22,8 @@ exports.seed = async function(knex) {
     {
       make: 'Volvo',
       model: "Amazon",
-      year: '1968'
+      year: '1968',
+      comments: 'I miss this car'
     },
   ])
 

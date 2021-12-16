@@ -47,8 +47,12 @@ Here is a checklist of tasks to help you put your project together:
 
 
 
-
 - Create a "test" script in your `package.json` using cross-env to inject a `NODE_ENV` of "testing".
+
+
+
+
+
 
 - Create a basic express application with a few database access functions and a few endpoints.
 

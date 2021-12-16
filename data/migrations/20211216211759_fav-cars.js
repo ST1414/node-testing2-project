@@ -11,7 +11,9 @@ exports.up = async function(knex) {
             .notNullable();
 
         table.integer('year')
-            .notNullable;
+            .notNullable();
+
+        table.text('comments')
 
     })
 };
