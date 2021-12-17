@@ -19,9 +19,12 @@ router.get('/:id', (req, res, next) => {
         .catch(next);   
 })
 
-router.post('/', (req, res) => {
-    console.log({ message: 'Create a Car' });
-    res.json({ message: 'Create a Car' })
+router.post('/', (req, res, next) => {
+    Car.create(req.body)
+        .then( response => {
+            res.json(response);
+        })
+        .catch(next);
 })
 
 module.exports = router;

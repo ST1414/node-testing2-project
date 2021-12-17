@@ -54,62 +54,49 @@ describe('[GET] /api/cars/:id', () => {
     
 })
 
-describe('car tests - post by id', () => {
+describe('[POST] /api/cars - Create New Car', () => {
     let res;
     let newCar = { make: 'Datsun', model: '510', year: 1975 }
     beforeEach(async ()=> {
-        res = await request(server).post(`/api/cars`).send(newCar);
+        res = await request(server).post('/api/cars').send(newCar);
     })
 
-    it
+    it('new car created, responds w. status 201', async () => {
+        expect(res.status).toBe(200);
+    })
+    it('new car created, returns w. created car', async () => {
+        expect(res.body).toMatchObject(newCar);
+    })
+    it('new car created, car is in the database', async () => {
+        const actual = await db('cars').where('model', '510').first();
+        const expected = newCar;
+        expect(actual).toMatchObject(expected);
+    })    
+})
+
+describe('[POST] /api/cars - Do NOT New Car', () => {
+    let res;
+    let carNoMake = { model: 'Mustang', year: 1968};
+    let carNoModel = { make: 'Ford', year: 1968};
+    let carNoYear = { make: 'Ford', model: 'Mustang'};
+    beforeEach(async ()=> {
+        resNoMake = await request(server).post(`/api/cars`).send(carNoMake);
+        resNoModel = await request(server).post(`/api/cars`).send(carNoModel);
+        resNoYear = await request(server).post(`/api/cars`).send(carNoYear);
+    })
+    it('car without MAKE not created, responds with error 500', async () => {
+        expect(resNoMake.status).toBe(500);
+    })
+    it('car without MODEL not created, responds with error 500', async () => {
+        expect(resNoModel.status).toBe(500);
+    })
+    it('car without YEAR not created, responds with error 500', async () => {
+        expect(resNoYear.status).toBe(500);
+    })
+
+    it('car without MAKE not created, car not in database', async () => {
+        const actual = await db('cars').where('model', carNoMake.model).first();
+        expect(actual).toBe(undefined);
+    })
     
 })
-
-/*
-// Get all - value
-// Get all - status
-
-ID - status
-ID - single obj
-ID - correct
-
-POST 
-- status, response ... add successful
-- status, response ... add with error
-- status, 
-
-it('is the correct env', () => {
-  expect(process.env.NODE_ENV).toBe('testing')
-})
-describe('hobbits router', () => {
-  describe('[GET] /hobbits', () => {
-    let res
-    beforeEach(async () => {
-      res = await request(server).get('/hobbits')
-    })
-    it('responds with 200 OK', async () => {
-      expect(res.status).toBe(200)
-    })
-    it('responds with all hobbits', async () => {
-      expect(res.body).toHaveLength(4)
-    })
-  })
-  describe('[POST] /hobbits', () => {
-    let res
-    beforeEach(async () => {
-      res = await request(server)
-        .post('/hobbits/')
-        .send({ name: 'gabe' })
-    })
-    it('responds with a 210 created', async () => {
-      expect(res.status).toBe(201)
-    })
-    it('responds with new hobbit', async () => {
-      expect(res.body).toMatchObject({ id: 5, name: 'gabe' })
-    })
-    it('responds with da new (snapshot)', () => {
-      expect(res.body).toMatchSnapshot()
-    })
-  })
-})
-*/
